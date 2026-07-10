@@ -1,4 +1,4 @@
-## 💻 Today's Practical (MySQL)
+## 💻 Todays Practical (MySQL)
 
 ## Run these commands:
 

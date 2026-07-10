@@ -146,3 +146,92 @@ mysql> EXPLAIN
 1 row in set, 1 warning (0.00 sec)
 
 mysql>
+
+
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES ;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> USE COLLEGE ;
+Database changed
+mysql> SHOW TABLES ;
++-------------------+
+| Tables_in_college |
++-------------------+
+| marks             |
+| students          |
+| users             |
++-------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM students ;
++----+----------+------+
+| id | name     | age  |
++----+----------+------+
+|  2 | Iram     |   18 |
+|  5 | Sara     |   19 |
+|  1 | Abdullah |   21 |
+|  4 | Ali      |   21 |
+|  6 | Zoya     |   22 |
+| 11 | Sadik    |   23 |
+|  3 | Arsh     |   25 |
+|  9 | Jhon     |   33 |
+|  7 | pooja    |   34 |
+|  8 | saif     |   45 |
+| 10 | Ajaye    |   56 |
++----+----------+------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> * FROM STUDENTNS;
+ERROR 1146 (42S02): Table 'college.studentns doesn't exist
+mysql> SELECT *
+    -> FROM students
+    -> ORDER BY age ASC;
++----+----------+------+
+| id | name     | age  |
++----+----------+------+
+|  2 | Iram     |   18 |
+|  5 | Sara     |   19 |
+|  1 | Abdullah |   21 |
+|  4 | Ali      |   21 |
+|  6 | Zoya     |   22 |
+| 11 | Sadik    |   23 |
+|  3 | Arsh     |   25 |
+|  9 | Jhon     |   33 |
+|  7 | pooja    |   34 |
+|  8 | saif     |   45 |
+| 10 | Ajaye    |   56 |
++----+----------+------+
+11 rows in set (0.03 sec)
+
+mysql> SELECT *
+    -> FROM students
+    -> ORDER BY id ASC;
++----+----------+------+
+| id | name     | age  |
++----+----------+------+
+|  1 | Abdullah |   21 |
+|  2 | Iram     |   18 |
+|  3 | Arsh     |   25 |
+|  4 | Ali      |   21 |
+|  5 | Sara     |   19 |
+|  6 | Zoya     |   22 |
+|  7 | pooja    |   34 |
+|  8 | saif     |   45 |
+|  9 | Jhon     |   33 |
+| 10 | Ajaye    |   56 |
+| 11 | Sadik    |   23 |
++----+----------+------+
+11 rows in set (0.00 sec)
