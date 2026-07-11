@@ -235,3 +235,68 @@ mysql> SELECT *
 | 11 | Sadik    |   23 |
 +----+----------+------+
 11 rows in set (0.00 sec)
+
+
+
+
+11/07/2026
+
+
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show  databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.05 sec)
+
+mysql> use college;
+Database changed
+mysql> show tales;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tales' at line 1
+mysql> SHOW tables ;
++-------------------+
+| Tables_in_college |
++-------------------+
+| marks             |
+| students          |
+| users             |
++-------------------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT * FROM students ;
++----+----------+------+
+| id | name     | age  |
++----+----------+------+
+|  2 | Iram     |   18 |
+|  5 | Sara     |   19 |
+|  1 | Abdullah |   21 |
+|  4 | Ali      |   21 |
+|  6 | Zoya     |   22 |
+| 11 | Sadik    |   23 |
+|  3 | Arsh     |   25 |
+|  9 | Jhon     |   33 |
+|  7 | pooja    |   34 |
+|  8 | saif     |   45 |
+| 10 | Ajaye    |   56 |
++----+----------+------+
+11 rows in set (0.00 sec)
+
+mysql>
