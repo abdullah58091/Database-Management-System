@@ -79,3 +79,52 @@ mysql> SELECT * FROM EMPLOYEE;
 4 rows in set (0.00 sec)
 
 mysql>
+mysql> SHOW DATABASES ;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| company            |
+| information_schema |
+| log_sentinel       |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.06 sec)
+
+mysql> USE  COLLEGE;
+Database changed
+mysql> SHOW TABLES ;
++-------------------+
+| Tables_in_college |
++-------------------+
+| employees         |
+| marks             |
+| student_view      |
+| students          |
+| subjects          |
+| teachers          |
+| users             |
++-------------------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT * FROM STUDENTS;
++----+----------+------+-------+
+| id | name     | age  | dept  |
++----+----------+------+-------+
+|  1 | Abdullah |   21 | IT    |
+|  2 | Iram     |   18 | IT    |
+|  3 | Arsh     |   25 | IT    |
+|  4 | Ali      |   21 | HR    |
+|  5 | Sara     |   19 | HR    |
+|  6 | Zoya     |   22 | HR    |
+|  7 | pooja    |   34 | Sales |
+|  8 | saif     |   45 | Sales |
+|  9 | Jhon     |   33 | Sales |
+| 10 | Ajaye    |   56 | Sales |
+| 11 | Sadik    |   23 | Sales |
++----+----------+------+-------+
+11 rows in set (0.10 sec)
+
+mysql>
