@@ -114,7 +114,7 @@ mysql> SELECT * FROM STUDENTS;
 | id | name     | age  | dept  |
 +----+----------+------+-------+
 |  1 | Abdullah |   21 | IT    |
-|  2 | Iram     |   18 | IT    |
+|  2 |          |   18 | IT    |
 |  3 | Arsh     |   25 | IT    |
 |  4 | Ali      |   21 | HR    |
 |  5 | Sara     |   19 | HR    |
