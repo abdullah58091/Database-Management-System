@@ -301,25 +301,254 @@ mysql> SELECT * FROM students ;
 
 mysql>
 
-class Solution {
-    public int[] arrayRankTransform(int[] arr) {
-        int[] temp = Arrays.copyOf(arr, arr.length);
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| company            |
+| information_schema |
+| log_sentinel       |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.01 sec)
 
-        Arrays.sort(temp);
+mysql> USE log_sentinel;
+Database changed
+mysql> SELECT
+    ->     id,
+    ->     title,
+    ->     description,
+    ->     severity,
+    ->     status,
+    ->     related_log_id,
+    ->     created_at,
+    ->     updated_at
+    -> FROM incidents
+    -> ORDER BY id DESC;
++----+----------------------------------------------------------------+--------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+| id | title                                                          | description                                            | severity | status   | related_log_id | created_at                 | updated_at                 |
++----+----------------------------------------------------------------+--------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+|  2 | Automatic Incident: Payment service database connection failed | Payment service database connection failed             | HIGH     | OPEN     |             10 | 2026-09-30 10:17:25.175733 | 2026-09-30 10:17:25.175733 |
+|  1 | Database Connection Failure                                    | Payment service is unable to connect to MySQL database | CRITICAL | RESOLVED |              0 | 2026-09-06 00:00:34.470745 | 2026-09-06 00:00:34.470745 |
++----+----------------------------------------------------------------+--------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+2 rows in set (0.00 sec)
 
-        int rank = 1;
-        HashMap<Integer, Integer> hm = new HashMap<>();
+mysql> SELECT
+    ->     l.id,
+    ->     l.level,
+    ->     l.message,
+    ->     l.source
+    -> FROM logs l
+    -> LEFT JOIN incidents i
+    ->     ON l.id = i.related_log_id
+    -> WHERE i.id IS NULL
+    -> ORDER BY l.id;
++----+-------+--------------------------------------------+-----------------+
+| id | level | message                                    | source          |
++----+-------+--------------------------------------------+-----------------+
+|  5 | ERROR | Database connection failed                 | Payment-Service |
+|  7 | ERROR | Payment service database connection failed | Payment-Service |
+|  8 | ERROR | Payment service database connection failed | Payment-Service |
+|  9 | ERROR | Payment service database connection failed | payment-service |
++----+-------+--------------------------------------------+-----------------+
+4 rows in set (0.00 sec)
 
-        for (int ele : temp) {
-            if (!hm.containsKey(ele)) {
-                hm.put(ele, rank++);
-            }
-        }
+mysql> SELECT
+    ->     id,
+    ->     title,
+    ->     severity,
+    ->     status,
+    ->     related_log_id,
+    ->     created_at,
+    ->     updated_at
+    -> FROM incidents
+    -> ORDER BY id;
++----+----------------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+| id | title                                                          | severity | status   | related_log_id | created_at                 | updated_at                 |
++----+----------------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+|  1 | Database Connection Failure                                    | CRITICAL | RESOLVED |              0 | 2026-09-06 00:00:34.470745 | 2026-09-06 00:00:34.470745 |
+|  2 | Automatic Incident: Payment service database connection failed | HIGH     | OPEN     |             10 | 2026-09-30 10:17:25.175733 | 2026-09-30 10:17:25.175733 |
+|  4 | Manual Database Incident                                       | HIGH     | OPEN     |              5 | 2026-09-30 10:30:06.568867 | 2026-09-30 10:30:06.568867 |
+|  5 | Manual Database Incident 2                                     | HIGH     | OPEN     |              7 | 2026-09-30 10:33:16.231447 | 2026-09-30 10:33:16.231447 |
++----+----------------------------------------------------------------+----------+----------+----------------+----------------------------+----------------------------+
+4 rows in set (0.00 sec)
 
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = hm.get(arr[i]);
-        }
+mysql> SELECT *
+    -> FROM logs
+    -> WHERE id = 0;
+Empty set (0.00 sec)
 
-        return arr;
-    }
-}
+mysql> DELETE FROM incidents
+    -> WHERE id = 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT id, username, email, role
+    -> FROM users;
++----+-----------+---------------------+------+
+| id | username  | email               | role |
++----+-----------+---------------------+------+
+|  1 | abdullah  | abdullah@gmail.com  | USER |
+|  2 | abdullah2 | abdullah2@gmail.com | USER |
++----+-----------+---------------------+------+
+2 rows in set (0.03 sec)
+
+mysql> SELECT  id, username, email ,role
+    -> FROM log_sentinel.users;
++----+-----------+---------------------+------+
+| id | username  | email               | role |
++----+-----------+---------------------+------+
+|  1 | abdullah  | abdullah@gmail.com  | USER |
+|  2 | abdullah2 | abdullah2@gmail.com | USER |
++----+-----------+---------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT id, username, role
+    -> FROM log_sentinel.users;
++----+-----------+------+
+| id | username  | role |
++----+-----------+------+
+|  1 | abdullah  | USER |
+|  2 | abdullah2 | USER |
++----+-----------+------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE log_sentinel.users
+    -> SET role = 'ADMIN'
+    -> WHERE id = 1;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> UPDATE log_sentinel.users
+    -> SET role = 'DEVELOPER'
+    -> WHERE id = 2;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT id, username, role
+    -> FROM log_sentinel.users;
++----+-----------+-----------+
+| id | username  | role      |
++----+-----------+-----------+
+|  1 | abdullah  | ADMIN     |
+|  2 | abdullah2 | DEVELOPER |
++----+-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT username, password, role
+    -> FROM log_sentinel.users
+    -> WHERE username = 'abdullah';
++----------+--------------------------------------------------------------+-------+
+| username | password                                                     | role  |
++----------+--------------------------------------------------------------+-------+
+| abdullah | $2a$........................................................ | ADMIN |
++----------+--------------------------------------------------------------+-------+
+1 row in set (0.00 sec)
+
+mysql> UPDATE log_sentinel.users
+    -> SET role = 'ADMIN'
+    -> WHERE username = 'admin_test';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT id, username, role
+    -> FROM log_sentinel.users
+    -> WHERE username = 'admin_test';
++----+------------+-------+
+| id | username   | role  |
++----+------------+-------+
+|  4 | admin_test | ADMIN |
++----+------------+-------+
+1 row in set (0.00 sec)
+
+mysql> SELECT
+    ->     id,
+    ->     title,
+    ->     severity,
+    ->     status,
+    ->     related_log_id
+    -> FROM log_sentinel.incidents
+    -> ORDER BY id;
++----+----------------------------------------------------------------+----------+----------+----------------+
+| id | title                                                          | severity | status   | related_log_id |
++----+----------------------------------------------------------------+----------+----------+----------------+
+|  2 | Automatic Incident: Payment service database connection failed | HIGH     | RESOLVED |             10 |
+|  4 | Manual Database Incident                                       | HIGH     | RESOLVED |              5 |
+|  6 | Automatic Incident: Payment database connection failed         | HIGH     | OPEN     |             11 |
++----+----------------------------------------------------------------+----------+----------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     id,
+    ->     level,
+    ->     message,
+    ->     source
+    -> FROM log_sentinel.logs
+    -> ORDER BY id;
++----+-------+--------------------------------------------+-----------------+
+| id | level | message                                    | source          |
++----+-------+--------------------------------------------+-----------------+
+|  5 | ERROR | Database connection failed                 | Payment-Service |
+|  7 | ERROR | Payment service database connection failed | Payment-Service |
+|  8 | ERROR | Payment service database connection failed | Payment-Service |
+|  9 | ERROR | Payment service database connection failed | payment-service |
+| 10 | ERROR | Payment service database connection failed | payment-service |
+| 11 | ERROR | Payment database connection failed         | payment-service |
++----+-------+--------------------------------------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     id,
+    ->     title,
+    ->     severity,
+    ->     status,
+    ->     related_log_id
+    -> FROM log_sentinel.incidents
+    -> ORDER BY id;
++----+----------------------------------------------------------------+----------+----------+----------------+
+| id | title                                                          | severity | status   | related_log_id |
++----+----------------------------------------------------------------+----------+----------+----------------+
+|  2 | Automatic Incident: Payment service database connection failed | HIGH     | RESOLVED |             10 |
+|  4 | Manual Database Incident                                       | HIGH     | RESOLVED |              5 |
+|  6 | Automatic Incident: Payment database connection failed         | HIGH     | OPEN     |             11 |
+| 11 | Manual Payment Incident                                        | HIGH     | OPEN     |              7 |
++----+----------------------------------------------------------------+----------+----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select u1_0.id
+    -> from users u1_0
+    -> where u1_0.username=?
+    -> ^C
+mysql> SELECT id, username, role
+    -> FROM log_sentinel.users;
++----+--------------+-----------+
+| id | username     | role      |
++----+--------------+-----------+
+|  1 | abdullah     | ADMIN     |
+|  2 | abdullah2    | DEVELOPER |
+|  3 | auth_test    | DEVELOPER |
+|  4 | admin_test   | ADMIN     |
+|  5 | auth_test_01 | DEVELOPER |
++----+--------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE log_sentinel.users
+    -> SET role = 'ADMIN'
+    -> WHERE username = 'auth_test_01';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT id, username, role
+    -> FROM log_sentinel.users
+    -> WHERE username = 'auth_test_01';
++----+--------------+-------+
+| id | username     | role  |
++----+--------------+-------+
+|  5 | auth_test_01 | ADMIN |
++----+--------------+-------+
+1 row in set (0.00 sec)
+
+mysql>
