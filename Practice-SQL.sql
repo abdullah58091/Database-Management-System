@@ -552,3 +552,111 @@ mysql> SELECT id, username, role
 1 row in set (0.00 sec)
 
 mysql>
+
+mysql> USE company;
+Database changed
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_company         |
++---------------------------+
+| department_salary_summary |
+| departments               |
+| employee                  |
+| employees                 |
+| meeting                   |
++---------------------------+
+5 rows in set (0.05 sec)
+
+mysql> SELECT * FROM departments;
++---------+-----------------+
+| dept_id | department_name |
++---------+-----------------+
+|     101 | IT              |
+|     102 | HR              |
+|     103 | Finance         |
+|     104 | Marketing       |
++---------+-----------------+
+4 rows in set (0.03 sec)
+
+mysql> SELECT
+    ->     e.name,
+    ->     d.department_name,
+    ->     e.salary
+    -> FROM employee e
+    -> JOIN departments d
+    ->     ON e.department = d.department_name;
++-------+-----------------+----------+
+| name  | department_name | salary   |
++-------+-----------------+----------+
+| Sara  | IT              | 75000.00 |
+| Ali   | IT              | 70000.00 |
+| John  | HR              | 45000.00 |
+| David | Finance         | 55000.00 |
++-------+-----------------+----------+
+4 rows in set (0.02 sec)
+
+mysql> SELECT
+    ->     e.name,
+    ->     d.department_name,
+    ->     e.salary
+    -> FROM employee e
+    -> JOIN departments d
+    ->     ON e.department = d.department_name
+    -> WHERE e.salary > 50000;
++-------+-----------------+----------+
+| name  | department_name | salary   |
++-------+-----------------+----------+
+| Sara  | IT              | 75000.00 |
+| Ali   | IT              | 70000.00 |
+| David | Finance         | 55000.00 |
++-------+-----------------+----------+
+3 rows in set (0.04 sec)
+
+mysql> SELECT
+    ->     e.name,
+    ->     d.department_name,
+    ->     e.salary
+    -> FROM employee e
+    -> JOIN departments d
+    ->     ON e.department = d.department_name
+    -> WHERE e.salary > 50000;
++-------+-----------------+----------+
+| name  | department_name | salary   |
++-------+-----------------+----------+
+| Sara  | IT              | 75000.00 |
+| Ali   | IT              | 70000.00 |
+| David | Finance         | 55000.00 |
++-------+-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     name,
+    ->     salary
+    -> FROM employee
+    -> ORDER BY salary DESC
+    -> LIMIT 1;
++------+----------+
+| name | salary   |
++------+----------+
+| Sara | 75000.00 |
++------+----------+
+1 row in set (0.00 sec)
+
+mysql> EXPLAIN
+    -> SELECT
+    ->     e.name,
+    ->     d.department_name,
+    ->     e.salary
+    -> FROM employee e
+    -> JOIN departments d
+    ->     ON e.department = d.department_name
+    -> WHERE e.salary > 50000;
++----+-------------+-------+------------+-------+---------------------+---------------------+---------+------+------+----------+--------------------------------------------+
+| id | select_type | table | partitions | type  | possible_keys       | key                 | key_len | ref  | rows | filtered | Extra                                      |
++----+-------------+-------+------------+-------+---------------------+---------------------+---------+------+------+----------+--------------------------------------------+
+|  1 | SIMPLE      | e     | NULL       | range | idx_employee_salary | idx_employee_salary | 6       | NULL |    3 |   100.00 | Using index condition                      |
+|  1 | SIMPLE      | d     | NULL       | ALL   | NULL                | NULL                | NULL    | NULL |    4 |    25.00 | Using where; Using join buffer (hash join) |
++----+-------------+-------+------------+-------+---------------------+---------------------+---------+------+------+----------+--------------------------------------------+
+2 rows in set, 1 warning (0.01 sec)
+
+mysql>
